@@ -10,10 +10,10 @@
         </div>
       </draggable>
 
-      <div class="card card-body">
-        <textarea v-model="messages[list.id]" class="form-control"></textarea>
+      
+        <textarea v-model="messages[list.id]" class="form-control mb-1"></textarea>
         <button v-on:click="submitMessages(list.id)" class="btn btn-primary">Save</button>
-      </div>
+      
     </div>
   </draggable>
 </template>
@@ -94,10 +94,18 @@ export default {
 }
 
 .board {
-
+  white-space: nowrap;
+  overflow-x: auto;
   }
 
 .list {
+  background: #E2E4E6;
+  border-radius: 5px;
+  display: inline-block;
+  margin-right: 20px;  
+  padding: 10px; 
+  vertical-align: top;
+  width: 270px;
 
 }
 </style>
