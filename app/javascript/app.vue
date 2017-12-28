@@ -1,6 +1,6 @@
 <template>
   <draggable v-model="lists" :options="{group: 'lists'}" class="row dragArea" @end="listMoved">
-      <div v-for="(list, index) in original_lists" class="col-3">
+      <div v-for="(list, index) in lists" class="col-3">
       <h6>{{ list.name }}</h6>
       <hr>
 
@@ -31,7 +31,15 @@ export default {
 
   methods: {
   listMoved: function(event) {
-    console.log(event)
+    var data = new FormData
+    data.append("list[position]", event.newIndex + 1)
+
+    Rails.ajax({
+      url: `/lists/${this.lists[event.newIndex].id}/move`,
+      type: "PATCH",
+      data: data,
+      dataType: "json",
+    })
   },
   submitMessages: function(list_id) {
     var data = new FormData
