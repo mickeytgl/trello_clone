@@ -9,9 +9,14 @@
         </div>
       </draggable>
 
-      
-        <textarea v-model="messages" class="form-control mb-1"></textarea>
-        <button v-on:click="submitMessage" class="btn btn-primary">Save</button>
+
+      <a v-if="!editing" v-on:click="startEditing">Add a card</a>
+        
+      <textarea v-if="editing" ref="message" v-model="message" class="form-control mb-1"></textarea>
+      <button v-if="editing" v-on:click="submitMessage" class="btn btn-primary">Save</button>
+      <a v-if="editing" v-on:click="editing=false">Cancel</a>
+
+
        
   </div>
 </template>
@@ -20,15 +25,21 @@
 import draggable from 'vuedraggable'
 export default {
   components: { draggable },
-  props: ["lists"],
+  props: ["list"],
 
   data: function() {
     return {
+      editing: false,
       message: ""
     }
   },
 
   methods: {
+  startEditing: function() {
+    this.editing = true
+    this.$nextTick(() => { this.$refs.message.focus() })
+  },
+
   cardMoved: function(event) {
     const evt = event.added || event.moved 
 
@@ -55,9 +66,10 @@ export default {
   },
 
     submitMessage: function() {
+    console.log("function submitMessage")
     var data = new FormData
-    data.append("card[list_id]", this.list_id)
-    data.append("card[name]", this.messages),
+    data.append("card[list_id]", this.list.id)
+    data.append("card[name]", this.message)
 
     Rails.ajax({
       url: "/cards",
@@ -65,9 +77,10 @@ export default {
       data: data,
       dataType: "json",
       success: (data) => {
-        const index = window.store.lists.findIndex(item => item.id == list_id);
+        const index = window.store.lists.findIndex(item => item.id == list.id);
         window.store.lists[index].cards.push(data);
-        this.message = "";
+        this.message = ""
+        this.$nextTick(() => { this.$refs.message.focus() })
         } 
       });
     }
@@ -78,7 +91,7 @@ export default {
 <style scoped>
 .dragArea {
   min-height: 20px;
-},
+}
 
   .list {
   background: #E2E4E6;
