@@ -36,6 +36,10 @@ export default {
     },
 
     methods: {
+      closeModal: function(event) {
+        if (event.target.classlist.contains("modal")) { this.editing = false }
+      },
+
       save: function() {
         var data = new FormData
         data.append("card[name]", this.name)
@@ -54,11 +58,9 @@ export default {
           }
         })
       },
-      closeModal: function(event) {
-        if (event.target.classlist.contains("modal")) { this.editing = false }
-      },
+
     }
-};
+}
 </script>
 
 <style scoped>
