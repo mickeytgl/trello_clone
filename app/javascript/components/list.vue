@@ -4,7 +4,7 @@
       <hr>
       
       <draggable v-model="list.cards" :options="{group: 'cards'}" class="dragArea" @change="cardMoved">
-        <card v-for="card in list.cards" :card="card" :list="list"></card>
+        <card v-for="card in list.cards" :key="card.id" :list="list"></card>
       </draggable>
 
 

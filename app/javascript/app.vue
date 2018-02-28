@@ -28,9 +28,14 @@ export default {
   },
 
   computed: {
-    lists() {
-      return this.$store.state.lists;
-    }
+    lists: {
+      get() {
+        return this.$store.state.lists
+      },
+      set(value) {
+        this.$store.state.lists = value
+      },
+    },
   },
 
   methods: {
